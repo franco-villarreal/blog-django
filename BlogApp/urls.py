@@ -1,6 +1,8 @@
 from django.urls import path
-from BlogApp.views import findAll
+from BlogApp.views import home, findById
 
 urlpatterns = [
-    path('blogs/', findAll, name="blogs"),
+    path('', home, name="BlogAppHome"),
+    path('blogs/', home, name="BlogAppHome"),
+    path('blogs/(?P<id>\d+)/$', findById, name="BlogAppBlogs"),
 ]
