@@ -24,17 +24,17 @@ Home
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-            {% for blog in blogs %}
+            {% for post in posts %}
             <!-- Post preview-->
             <div class="post-preview">
-                <a href="{% url 'BlogAppBlogs' blog.id %}">
-                    <h2 class="post-title">{{ blog.title }}</h2>
-                    <h3 class="post-subtitle">{{ blog.article }}</h3>
+                <a href="{% url 'BlogAppPosts' post.id %}">
+                    <h2 class="post-title">{{ post.title }}</h2>
+                    <h3 class="post-subtitle">{{ post.subtitle }}</h3>
                 </a>
                 <p class="post-meta">
                     Posted by
-                    <a href="#!">{{ blog.author_id }}</a>
-                    on {{ blog.created_at }}
+                    <a href="#!">{{ post.user.username }}</a>
+                    on {{ post.created_at }}
                 </p>
             </div>
             <!-- Divider-->

@@ -1,17 +1,15 @@
 from django.shortcuts import render
 
-from BlogApp.models import Blog
+from BlogApp.models import Post
 
 def home(request):
-    blogs = Blog.objects.all()
-    context = { "blogs": blogs }
+    posts = Post.objects.all()
+    context = { "posts": posts }
 
     return render(request, 'BlogApp/home.html', context)
 
 def findById(request, id):
-    print(id)
-    posts = Blog.objects.filter(id=id)
-    print(posts[0].title)
+    posts = Post.objects.filter(id=id)
     context = { "post": posts[0] }
 
     return render(request, 'BlogApp/post.html', context)

@@ -1,19 +1,18 @@
-from turtle import title
 from django.db import models
 
-class Author(models.Model):
-    name = models.CharField(max_length=40)
-    last_name = models.CharField(max_length=40)
+class User(models.Model):
+    username = models.CharField(max_length=40)
 
-class Blog(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=100)
+    subtitle = models.CharField(max_length=200)
     article = models.CharField(max_length=10000)
-    author_id = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
 
-class BlogComment(models.Model):
-    blog_id = models.IntegerField()
-    username = models.CharField(max_length=15)
+class PostComment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.CharField(max_length=100)
     created_at = models.DateTimeField()
     

@@ -3,21 +3,21 @@
 {% load static %}
 
 {% block title %}
-{{ blog.title }}
+{{ post.title }}
 {% endblock %}
 
 {% block dinamicBody %}
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+    <header class="masthead">
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="post-heading">
                         <h1>{{ post.title }}</h1>
-                        <h2 class="subheading">{{ post.article }}</h2>
+                        <h2 class="subheading">{{ post.subtitle }}</h2>
                         <span class="meta">
                             Posted by
-                            <a href="#!">{{ post.author_id }}</a>
+                            <a href="#!">{{ post.user.username }}</a>
                             on {{ post.created_at }}
                         </span>
                     </div>
