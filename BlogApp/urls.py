@@ -1,8 +1,9 @@
 from django.urls import path
-from BlogApp.views import home, findPostById, createPost
+from BlogApp.views import about, home, findPostById, createPost
 
 urlpatterns = [
-    path('pages/', home, name="BlogAppHome"),
+    path('', home, name="BlogAppHome"),
     path('pages/', createPost, name="BlogAppNewPost"),
     path('pages/(?P<id>\d+)/$', findPostById, name="BlogAppPosts"),
+    path('about/', about, name="BlogAppAbout")
 ]
