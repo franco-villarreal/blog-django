@@ -1,7 +1,6 @@
 from django import forms
 
 class CreatePostForm(forms.Form):
-    author = forms.CharField(max_length=15)
     title = forms.CharField(max_length=100)
     subtitle = forms.CharField(max_length=200)
     article = forms.CharField(max_length=10000)

@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, authenticate
+from django.contrib.auth.forms import AuthenticationForm, authenticate, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -27,3 +27,19 @@ def sign_in(request):
     }
 
     return render(request, 'AuthApp/sign-in.html', context)
+
+def sign_up(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid:
+            data = form.cleaned_data
+            form.save()
+
+            return redirect('BlogAppHome')
+        else:
+            return redirect('AuthAppSignUp')
+        
+    else:
+        form = UserCreationForm()
+
+    return render(request, "AuthApp/sign-up.html", {"form": form})
