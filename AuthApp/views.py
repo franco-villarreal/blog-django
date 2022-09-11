@@ -18,7 +18,7 @@ def sign_in(request):
                 login(request, user)
                 messages.info(request, 'Sign in successfully')
             else:
-                messages.info(request, 'Error trying to sign in')
+                messages.error(request, 'Error trying to sign in')
                 
         return redirect('BlogAppHome')
     
@@ -31,12 +31,12 @@ def sign_in(request):
 def sign_up(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
-        if form.is_valid:
-            data = form.cleaned_data
+        if form.is_valid():
             form.save()
 
             return redirect('BlogAppHome')
         else:
+            messages.error(request, 'Error trying to sign up')
             return redirect('AuthAppSignUp')
         
     else:
