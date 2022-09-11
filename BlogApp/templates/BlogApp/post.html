@@ -48,12 +48,17 @@
                 <!-- Post preview-->
                 <div class="post-preview">
                     
+                    
                     <p class="post-meta">
                         By
                         <a href="{% url 'BlogAppPosts' post.id %}">{{ comment.user.username }}</a>
                         on {{ comment.created_at }}
+                        
                     </p>
                     <p>{{ comment.message }}</p>
+                    {% if comment.user.username == user.username %}
+                        <a href="#" class="post-meta">Remove comment</a>
+                    {% endif %}
                 </div>
                 <!-- Divider-->
                 <hr class="my-4" />

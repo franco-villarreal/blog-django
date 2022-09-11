@@ -9,5 +9,4 @@ class FindPostByUsernameForm(forms.Form):
     username = forms.CharField(max_length=100)
 
 class CommentPostForm(forms.Form):
-    username = forms.CharField(max_length=15)
     message = forms.CharField(max_length=100)
