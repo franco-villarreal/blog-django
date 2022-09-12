@@ -16,7 +16,7 @@ def sign_in(request):
         
             if user:
                 login(request, user)
-                messages.info(request, 'Sign in successfully')
+                #messages.info(request, 'Sign in successfully')
             else:
                 messages.error(request, 'Error trying to sign in')
                 

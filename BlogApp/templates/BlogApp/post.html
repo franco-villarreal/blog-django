@@ -51,13 +51,13 @@
                     
                     <p class="post-meta">
                         By
-                        <a href="{% url 'BlogAppPosts' post.id %}">{{ comment.user.username }}</a>
+                        <a href="{% url 'BlogAppPostDetail' post.id %}">{{ comment.user.username }}</a>
                         on {{ comment.created_at }}
                         
                     </p>
                     <p>{{ comment.message }}</p>
                     {% if comment.user.username == user.username %}
-                        <a href="#" class="post-meta">Remove comment</a>
+                        <a href="{% url 'BlogAppDeletePostComment' post.id comment.id %}" class="post-meta">Remove comment</a>
                     {% endif %}
                 </div>
                 <!-- Divider-->

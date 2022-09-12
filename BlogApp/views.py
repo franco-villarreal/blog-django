@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from BlogApp.forms import CommentPostForm, CreatePostForm, FindPostByUsernameForm
 from BlogApp.models import Post, PostComment, User
@@ -22,6 +22,10 @@ def findUserByUsernameOrCreateIt(username):
 
 @login_required
 def home(request):
+    return redirect('BlogAppPosts')
+
+@login_required
+def posts(request):
     if request.method == 'POST':
         form = FindPostByUsernameForm(request.POST)
         if(form.is_valid()):
@@ -90,3 +94,15 @@ def createPost(request):
 @login_required
 def about(request):
     return render(request, 'BlogApp/about.html', {"user": request.user, "session": request.user.is_authenticated,})
+
+@login_required
+def deletePostComment(request, postId, commentId):
+    comment = PostComment.objects.get(id=commentId)
+    comment.delete()
+
+    post = Post.objects.get(id=postId)
+    comments = PostComment.objects.filter(post=post)
+
+    context = { "post": post, "comments": comments }
+
+    return render(request, 'BlogApp/post.html', context)

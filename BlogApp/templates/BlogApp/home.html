@@ -25,6 +25,7 @@ Home
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
             <form action="" method="POST">
+                <p>Filter posts by username</p>
                 {% csrf_token %}
                 {{ form.as_p }}
                 <div class="d-flex justify-content-end mb-4">
@@ -37,10 +38,12 @@ Home
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'BlogAppNewPost' %}">New →</a></div>
+            
             {% for post in posts %}
             <!-- Post preview-->
             <div class="post-preview">
-                <a href="{% url 'BlogAppPosts' post.id %}">
+                <a href="{% url 'BlogAppPostDetail' post.id %}">
                     <h2 class="post-title">{{ post.title }}</h2>
                     <h3 class="post-subtitle">{{ post.subtitle }}</h3>
                 </a>
@@ -54,7 +57,7 @@ Home
             <hr class="my-4" />
             {% endfor %}
 
-            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'BlogAppNewPost' %}">New →</a></div>
+            
         </div>
     </div>
 </div>
