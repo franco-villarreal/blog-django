@@ -10,7 +10,7 @@ Originalmente, el grupo era de 3 integrantes pero 2 de ellos abandonaron la curs
 
 ## DEMO
 
-// TODO: Add demo video url
+https://www.youtube.com/watch?v=l8HpS11qBq8
 
 ## Casos de prueba
 
