@@ -21,6 +21,12 @@
                             on {{ post.created_at }}
                         </span>
                     </div>
+                    {% if post.user.username == user.username %}
+                    <div>
+                        <a href={% url 'BlogAppPostEdit' post.id %}>Edit</a>
+                        <a href={% url 'BlogAppPostDelete' post.id %}>Delete</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
