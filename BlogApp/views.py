@@ -34,6 +34,8 @@ def posts(request):
             users = findUsersByUsername(data.get('username'))
             if not len(users) == 0:
                 posts = Post.objects.filter(user=users[0].id)
+            else:
+                posts = []
     else:
         posts = Post.objects.all()
 
@@ -127,9 +129,10 @@ def deletePostComment(request, postId, commentId):
     post = Post.objects.get(id=postId)
     comments = PostComment.objects.filter(post=post)
 
-    context = { "post": post, "comments": comments }
+    context = { "user": request.user, "session": request.user.is_authenticated, "post": post, "comments": comments, "form": CommentPostForm() }
 
-    return render(request, 'BlogApp/post.html', context)
+    #return render(request, 'BlogApp/post.html', context)
+    return redirect('BlogAppPostDetail', id=postId)
 
 @login_required
 def about(request):
