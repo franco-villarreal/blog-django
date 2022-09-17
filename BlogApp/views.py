@@ -34,14 +34,9 @@ def posts(request):
             users = findUsersByUsername(data.get('username'))
             if not len(users) == 0:
                 posts = Post.objects.filter(user=users[0].id)
+    else:
+        posts = Post.objects.all()
 
-                context = {
-                    "posts": posts
-                }
-
-                return render(request, 'BlogApp/home.html', context)
-    
-    posts = Post.objects.all()
     context = { "user": request.user, "session": request.user.is_authenticated, "posts": posts, "form": FindPostByUsernameForm() }
 
     return render(request, 'BlogApp/home.html', context)
@@ -93,22 +88,6 @@ def createPost(request):
     return render(request, 'BlogApp/create-post.html', context)
 
 @login_required
-def about(request):
-    return render(request, 'BlogApp/about.html', {"user": request.user, "session": request.user.is_authenticated,})
-
-@login_required
-def deletePostComment(request, postId, commentId):
-    comment = PostComment.objects.get(id=commentId)
-    comment.delete()
-
-    post = Post.objects.get(id=postId)
-    comments = PostComment.objects.filter(post=post)
-
-    context = { "post": post, "comments": comments }
-
-    return render(request, 'BlogApp/post.html', context)
-
-@login_required
 def editPostById(request, id):
     print('ENTER TO EditPost')
     if request.method == 'POST':
@@ -139,3 +118,20 @@ def deletePostById(request, id):
        post.delete()
 
     return redirect('BlogAppPosts')
+
+@login_required
+def deletePostComment(request, postId, commentId):
+    comment = PostComment.objects.get(id=commentId)
+    comment.delete()
+
+    post = Post.objects.get(id=postId)
+    comments = PostComment.objects.filter(post=post)
+
+    context = { "post": post, "comments": comments }
+
+    return render(request, 'BlogApp/post.html', context)
+
+@login_required
+def about(request):
+    return render(request, 'BlogApp/about.html', {"user": request.user, "session": request.user.is_authenticated,})
+
