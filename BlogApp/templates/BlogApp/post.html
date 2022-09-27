@@ -40,6 +40,11 @@
                 </div>
             </div>
         </div>
+        <div class="text-center">
+            {% for image in images %}
+            <img src={{ image.image.url }} height="200px">
+            {% endfor %}
+        </div>
     </article>
     <!-- Comments-->
     <div class="container px-4 px-lg-5">

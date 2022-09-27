@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from BlogApp.forms import CommentPostForm, CreatePostForm, FindPostByUsernameForm, UpdatePostForm
-from BlogApp.models import Post, PostComment, User
+from BlogApp.models import Post, PostComment, PostImage, User
 
 def findUsersByUsername(username):
     users = User.objects.filter(username=username)
@@ -48,10 +48,11 @@ def findPostById(request, id):
     posts = Post.objects.filter(id=id)
     post = posts[0]
     comments = PostComment.objects.filter(post=post)
+    images = PostImage.objects.filter(post=post)
 
     if request.method == 'POST':
         form = CommentPostForm(request.POST)
-        if(form.is_valid()):
+        if (form.is_valid()):
             data = form.cleaned_data
             user = findUserByUsernameOrCreateIt(request.user.username)
             comment = PostComment(post=posts[0], user=user, message=data.get('message'), created_at=datetime.now())
@@ -59,15 +60,16 @@ def findPostById(request, id):
 
             comments = PostComment.objects.filter(post=post)
 
-    context = { "user": request.user, "session": request.user.is_authenticated, "post": post, "comments": comments, "form": CommentPostForm() }
+    context = { "user": request.user, "session": request.user.is_authenticated, "post": post, "images": images, "comments": comments, "form": CommentPostForm() }
 
     return render(request, 'BlogApp/post.html', context)
 
 @login_required
 def createPost(request):
     if request.method == 'POST':
-        form = CreatePostForm(request.POST)
+        form = CreatePostForm(request.POST, request.FILES)
         if(form.is_valid()):
+            print('FORM IS VALID')
             data = form.cleaned_data
             users = User.objects.filter(username=request.user.username)
 
@@ -80,6 +82,9 @@ def createPost(request):
             post = Post(title=data.get('title'), subtitle=data.get('subtitle'), article=data.get('article'), user=user, created_at=datetime.now())
             post.save()
 
+            image = PostImage(post=post, image=data.get('image'))
+            image.save()
+
             return findPostById(request, post.id)
 
     context = {
@@ -91,11 +96,11 @@ def createPost(request):
 
 @login_required
 def editPostById(request, id):
-    print('ENTER TO EditPost')
+    post = Post.objects.get(id=id)
+    images = PostImage.objects.filter(post=post)
+
     if request.method == 'POST':
-        print('ENTER TO POST')
-        post = Post.objects.get(id=id)
-        form = UpdatePostForm(request.POST)
+        form = UpdatePostForm(request.POST, request.FILES)
         if(form.is_valid() and request.user.username == post.user.username):
             data = form.cleaned_data
             post.title = data.get('title')
@@ -103,11 +108,15 @@ def editPostById(request, id):
             post.article = data.get('article')
             post.save()
 
+            images.delete()
+            image = PostImage(post=post, image=data.get('image'))
+            image.save()
+
             return findPostById(request, post.id)
 
     context = {
         "user": request.user, "session": request.user.is_authenticated,
-        "form": CreatePostForm()
+        "form": CreatePostForm(initial={'title': post.title, 'subtitle': post.subtitle, 'article': post.article, 'image': images[0]})
     }
 
     return render(request, 'BlogApp/update-post.html', context)
@@ -126,12 +135,6 @@ def deletePostComment(request, postId, commentId):
     comment = PostComment.objects.get(id=commentId)
     comment.delete()
 
-    post = Post.objects.get(id=postId)
-    comments = PostComment.objects.filter(post=post)
-
-    context = { "user": request.user, "session": request.user.is_authenticated, "post": post, "comments": comments, "form": CommentPostForm() }
-
-    #return render(request, 'BlogApp/post.html', context)
     return redirect('BlogAppPostDetail', id=postId)
 
 @login_required
